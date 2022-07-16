@@ -1,9 +1,9 @@
-4c50c1af99eae74474882415ab10a769 *DESCRIPTION
+558b9bc5fb8f3defc6379a8d4968064d *DESCRIPTION
 0e072d361f621cb6ae5899517ca8b7cc *LICENSE
 530b9fdc2aecb1a2d43b7a502737370c *NAMESPACE
-33dd4f3285326ac034ea5ac5245046ca *NEWS.md
+1924745fb3b0aaedb4abdac6306093c4 *NEWS.md
 d055735f2dd57d07e7a0ab3e5dfb7c97 *R/animate.R
-8d06cb9d1a5320aa64a6304cefadb931 *R/banner.R
+b5a43fadf30e851bc0e7fbffb9189a0e *R/banner.R
 b29762944f20c681314b1d73722e8208 *R/broadcast.R
 33b023314754f3d1dd468da888a232b9 *R/clipboard.R
 d841d366985ebc678516f74d8030606f *R/editable.R
@@ -13,7 +13,7 @@ eea8c8bd67938e612d40f80c19e51cdf *R/panelset.R
 8392b0acc10b2a15aa2169568298d2ac *R/progress-bar.R
 fa29938a228c892e1b50255c8342250a *R/scribble.R
 26e9a0043d571238fc15dee58c7ecde5 *R/search.R
-25bc5025fe9dda33d6ce7f1e223b68dd *R/share_again.R
+b5335c167c323346c24ff2bf2145f980 *R/share_again.R
 fbeb731fa3c0efc8d9e7007ecd3a0b1e *R/slide-tone.R
 8e8648528013600d4304193e10a98b51 *R/styles.R
 a5416bfaa5a29c978b2837d18530ac80 *R/tachyons.R
@@ -39,8 +39,8 @@ e8c1120c7991d5714fc387bb31859f23 *inst/broadcast/broadcast.css
 f2fa469522d317ad07b39bd5885fd73e *inst/broadcast/broadcast.js
 0d24ab30592f0134ec9f0e0fb979252f *inst/clipboard/xaringanExtra-clipboard.css
 2bb20927869867c5e97f49fc6453932b *inst/clipboard/xaringanExtra-clipboard.js
-2f8ec52ec7c696b9b21cdf88167683d6 *inst/editable/editable.css
-cbd64cbc06cb3f73313c176f9b7b283d *inst/editable/editable.js
+0b45de25f6d1f20d04c7fe6fb076b3e4 *inst/editable/editable.css
+09b3648b7bb0457dbc4feb2761c6ee30 *inst/editable/editable.js
 9769ebfcd7ff5f36b85f1abd606c85c5 *inst/extra-styles/code-line-hover.css
 b6fff9bd03bc69090cd42497aa6b0077 *inst/extra-styles/code-mute-unhighlighted.css
 eba2cccc37ca906fb5634ea57d29bdbd *inst/fit-screen/fit-screen.js
@@ -48,8 +48,8 @@ eba2cccc37ca906fb5634ea57d29bdbd *inst/fit-screen/fit-screen.js
 333d5f1ed5930a79a820e489c85e3981 *inst/jslib/LICENSE
 d49273842035439fc99acc628cd64c46 *inst/jslib/clipboard/clipboard.js
 af8ab36589315582ccdd82f22e84bffb *inst/jslib/clipboard/clipboard.min.js
-9f626449145ecb0a222548f069a6ce00 *inst/jslib/fabric/fabric.js
-68dc62629a0c593a8c71653758a036ea *inst/jslib/fabric/fabric.min.js
+2b81fce36ac94505254f36c147cfc51d *inst/jslib/fabric/fabric.js
+6c76e88d8c5b6993107c4f0c38ed51bd *inst/jslib/fabric/fabric.min.js
 f55429dcd1884db388f5c561603cdeb4 *inst/jslib/fitvids/fitvids.min.js
 f55429dcd1884db388f5c561603cdeb4 *inst/jslib/fitvids/node_modules/fitvids/dist/fitvids.min.js
 30628dfbe09658a9ae5aeb7c19e25e77 *inst/jslib/freezeframe/freezeframe.min.js
@@ -73,9 +73,9 @@ a4bb2c2a82eabe0776e4c75098698fbd *inst/panelset/panelset.css
 ae46fc082ec03fb11c20ce5256a6f20c *inst/panelset/panelset.js
 d380a28380138b8ca84eb9c490f534ff *inst/progress-bar/progress-bar.js
 f89ac54b4650440e310d6778319b476e *inst/scribble/scribble.css
-aad98efd850b3011fc28ed1e9b19673a *inst/scribble/scribble.js
+38feae18a7c526e48f011037dad11a63 *inst/scribble/scribble.js
 0e7a6a4dfc8a1e5a8b832e43663bf4c4 *inst/search/search.css
-64086e42217a774d97e852cae3099307 *inst/search/search.js
+381576ad8e8db08b11372f07056f0a80 *inst/search/search.js
 d4d1375cc944b3b4f0b22b698991a513 *inst/search/search.svg
 a89127d10e7dbe5d6bc063edeb9084c5 *inst/share-again/shareagain.css
 8094845e7628f1a32a6cb157c0ded62e *inst/share-again/shareagain.js
@@ -116,7 +116,7 @@ d9f185b7b2a99a6f1c8aad2012968c06 *man/search.Rd
 fb46e4f0d34fb00f7bda32cf9f733e7c *man/style_banner.Rd
 511a7c83e54e5f0f70e62c708dff3f49 *man/tachyons.Rd
 7efc61f538237f25bc2d78b5948bea24 *man/tile_view.Rd
-38acea1f18decbf8905f03086d8277ac *man/use_banner.Rd
+efc57180c0b03b0425df0b35097b2a03 *man/use_banner.Rd
 b404755f36fde9bd11b458360f11c1e2 *man/use_broadcast.Rd
 19f0a1033c9b9176742f97af91b47e48 *man/use_progress_bar.Rd
 b68e16174140587cae715ec249a7a1ff *man/use_xaringan_extra.Rd
