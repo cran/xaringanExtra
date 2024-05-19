@@ -1,9 +1,124 @@
+# xaringanExtra 0.8.0
+
+This release focuses entirely on improving the **panelset** feature, especially
+in Quarto web pages and slides. Panelset is also now a Quarto extension that can
+be installed with `quarto add gadenbuie/xaringanExtra` and can be used with any
+computation engine.
+
+* **panelset** now works even better in Quarto documents, using the same syntax
+  as [used for panelsets in R Markdown documents](http://pkg.garrickadenbuie.com/xaringanExtra/#/panelset?id=use-in-r-markdown) (#190).
+
+* **panelset** now supports a [fenced div](https://pandoc.org/MANUAL.html#extension-fenced_divs)
+  syntax where `::: {.panelset}` is used to start a panelset and each panel is
+  defined by a new heading within the fenced div. When used in this way, the
+  heading level of the subsections is ignored, the highest level subsection
+  heading within the fenced div determines the section level that creates a new
+  panel (#191).
+
+* **panelset** CSS was revamped for better ergonomics, in particular to improve
+  how the border bottom separating the tabs from the content and the bottom
+  border of the active tab are handled. `style_panelset_tabs()` gains a new
+  `separator_color` argument to replace `tabs_border_bottom` (#192).
+
+* **panelset** now fully supports panelset chunks in Quarto, either with
+  `#| panelset: true` for chunk options or the alternative syntax specifying the
+  panel names for the source and output panels (#193):
+
+  ````markdown
+  ```{r}
+  #| panelset:
+  #|  - source: The Code
+  #|  - output: The Result
+  rnorm(10)
+  ```
+  ````
+
+  Unlike in R Markdown, where you always need to place panelset chunks in a
+  `::: {.panelset}` div, in Quarto, panelset code chunks automatically create
+  their own panelsets with two tabs (code and output). Use the 
+  `::: {.panelset}` syntax to add more than one panelset code chunk to the same
+  panelset (#196).
+
+* Nested **panelsets** are now supported (#194)! In xaringan slides and when
+  using the hand-rolled panelset syntax, you can now nest panelsets within
+  panelsets. In R Markdown or Quarto documents, panelsets chunks can be nested
+  within panelset sections. Nesting panelset sections requires the fenced div
+  syntax:
+
+  ````markdown
+  # Nested fenced divs
+
+  ::: {.panelset #outer}
+
+  ## One
+
+  Outer panel One.
+
+  ::: {.panelset #inner}
+  ### One A
+
+  Inner panel One A.
+
+  ### One B
+
+  Inner panel One B.
+  :::
+
+  ## Two
+
+  Outer panel Two.
+  :::
+  ````
+
+* **panelset** fully supports [Quarto Revealjs Presentations](https://quarto.org/docs/presentations/revealjs/).
+  All of panelset's features in xaringan are fully supported in Quarto slides,
+  including automatically stepping through the panels on a slides (#195).
+
+* **panelset** now supports synchronized panels (#195)! Give each panelset a
+  `group` attribute with a unique name, e.g. `{.panelset group="language"}`, and
+  the selected tab will be synchronized across all other panelsets with the same
+  group name. The tab selection is synchronized by tab name, so if the user
+  switches from the "R" tab to the "Python" tab, all panelsets with
+  `group="language"` will have their "Python" tab activated (if they have one).
+
+  The chosen panel tab is stored in the user's browser, which means that the
+  user's choice is reflected across all pages on your domain. It's also
+  remembered when they return to your page later (in the same browser).
+  Technically, this feature uses the browser's
+  [localStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API)
+  and no user data is transmitted anywhere.
+
+* **panelset** is now also a Quarto extension that can be installed and used
+  without requiring R (#195). To install the extension, run the following in
+  your terminal.
+
+  ```bash
+  quarto add gadenbuie/xaringanExtra
+  ```
+
+  Then, in your Quarto document, add the following to the YAML front matter:
+
+  ```yaml
+  filters:
+    - panelset
+  ```
+
+* **panelset** now forces the chunk options `echo = TRUE` and `eval = TRUE`,
+  when `panelset = TRUE` is used. Without these options, panelset's knitr hooks
+  can't correctly convert the chunk source and output into two separate panels.
+
+  When these options are disabled via a chunk option on the panelset chunk,
+  panelset will give an error to help you spot this issue early. But if `echo`
+  and `eval` are globally set to `FALSE`, panelset will now automatically set
+  them to `TRUE`. This is especially helpful in Quarto revealjs presentations
+  where Quarto defaults to `echo = FALSE` (#196).
+
 # xaringanExtra 0.7.0
 
 * BREAKING CHANGE: All arguments to `use_banner()` must be named. `use_banner()`
   now takes `...` earlier since you may want to include `style_banner()` style
   arguments without having to specify all the other arguments (#169).
-  
+
 * **scribble** can now be disabled on an individual slide by adding
   `class: no-scribble` to the slide (@mattwarkentin #166).
 
@@ -14,7 +129,7 @@
 
 * **editable** now hides remark's "Paused" overlay when editing slides in
   presenter mode (#178).
-  
+
 # xaringanExtra 0.6.0 (2022-06-07)
 
 * First release available on CRAN! Read about it at [garrickadenbuie.com/blog/xaringanextra-v0.6.0/](https://www.garrickadenbuie.com/blog/xaringanextra-v0.6.0/).
@@ -24,9 +139,9 @@
 * Add banners to your slides with `use_banner()`. Banners are text (or other
   HTML) that appear on every slide, for example the title of your talk or a link
   to your slides online. (thanks @mattwarkentin and @dataning, #161)
-  
+
 ## Improved extras
-  
+
 * Sideways panelsets collapse to standard panelsets with tabs above the content
   on small devices (max-width 480px). (#122)
 
@@ -41,7 +156,7 @@
 
 * `use_xaringan_extras("panelset")` is now equivalent to `use_panelset()`.
   Previously the first would not install the knitr chunk hooks.
-  
+
 * panelset now uses the xaringan knitr source hooks, restoring line highlighting
   in the source panel of panelset chunks. (#138)
 
@@ -60,7 +175,7 @@
 * Added color presets to **scribble**: press `0` through `9` while drawing to
   quickly toggle through a preset color palette, customizable using the
   `palette` argument of `use_palette()` (thanks @kim-soo-hwan, #112, #117).
-  
+
 * New feature: animated progress bars that don't interfere with the slide
   number. Simply add `use_progress_bar()` to your slides! (#109, #118)
 
@@ -92,7 +207,7 @@
 
 - New addin: **search**! Easily search through the text in your slides.
   (thanks @statnmap, #82)
-  
+
 - All extensions now use version numbers that are independent of the
   xaringanExtra package version. This will reduce the number of copies of an
   extension that are added to a blogdown site's dependencies by ensuring that
@@ -104,12 +219,12 @@
 
 # xaringanExtra 0.2.4 (2020-10-21)
 
-- Added **panelset chunks** that output code chunks source and results in 
+- Added **panelset chunks** that output code chunks source and results in
   separate panel tabs (#59)
-  
+
 - Added **broadcast**, a new experimental extension that allows viewers to follow the
   presenter's slides in their own browsers (thanks @spcanelon, #51, #58)
-  
+
 - Changing a panelset tab now emits a window resize event in hopes that any
   HTMLwidgets contained in the panel will resize to fit the panel container
   (thanks @mfherman #64)
@@ -147,13 +262,13 @@
   "share bar" to the bottom of your slides when embedded in an `<iframe`> in
   another page. Another function `embed_xaringan()` is provided to embed slides
   in blogdown and R Markdown HTML sites in a responsive container.
-  
+
 ## Updates and Changes
 
 * Various updates do `use_logo()` documentation. The class to hide the logo is
   `.hide_logo` and the logo CSS and JavaScript are embedded directly for
   xaringan >= 0.16 (thanks @chainsawriot, #22, #24, #25, #30)
-  
+
 * Updated cookie settings when storing editable fields (#42)
 
 * Disabled spell check and auto complete in editable areas (#16)
@@ -168,7 +283,7 @@
   result in an informative warning without throwing an error. The panelset
   also does a better job of handling many tabs, which are now wrapped into
   multiple lines of tabs. (thanks @realauggieheschmeyer, #37, #38, #39).
-  
+
 * In conjunction with the item above, the `style_panelset()` has been renamed
   `style_panelset_tabs()`. This more clearly describes the part of the panelset
   that is styled, and it helps clarify the meaning of the more concise function

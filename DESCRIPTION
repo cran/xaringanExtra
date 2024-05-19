@@ -1,6 +1,6 @@
 Package: xaringanExtra
 Title: Extras and Extensions for 'xaringan' Slides
-Version: 0.7.0
+Version: 0.8.0
 Authors@R: c(
     person("Garrick", "Aden-Buie", , "garrick@adenbuie.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7111-0077")),
@@ -51,14 +51,14 @@ Imports: htmltools, jsonlite, knitr, utils, uuid
 Suggests: callr, rmarkdown, testthat (>= 2.1.0), xaringan
 Config/testthat/edition: 3
 Encoding: UTF-8
-RoxygenNote: 7.2.0
+RoxygenNote: 7.3.1
 Collate: 'animate.R' 'banner.R' 'broadcast.R' 'clipboard.R'
         'editable.R' 'fit-screen.R' 'freezeframe.R' 'panelset.R'
         'progress-bar.R' 'scribble.R' 'share_again.R' 'slide-tone.R'
         'styles.R' 'search.R' 'tachyons.R' 'tile-view.R' 'use_logo.R'
         'utils.R' 'webcam.R' 'xaringanExtra-package.R'
 NeedsCompilation: no
-Packaged: 2022-07-16 12:47:54 UTC; garrick
+Packaged: 2024-05-19 12:38:53 UTC; garrick
 Author: Garrick Aden-Buie [aut, cre] (<https://orcid.org/0000-0002-7111-0077>),
   Matthew T. Warkentin [aut] (Contributed scribble,
     <https://orcid.org/0000-0001-8730-3511>),
@@ -78,4 +78,4 @@ Author: Garrick Aden-Buie [aut, cre] (<https://orcid.org/0000-0002-7111-0077>),
   Christpher Antonellis [cph] (freezeframe.js)
 Maintainer: Garrick Aden-Buie <garrick@adenbuie.com>
 Repository: CRAN
-Date/Publication: 2022-07-16 13:00:02 UTC
+Date/Publication: 2024-05-19 13:00:02 UTC

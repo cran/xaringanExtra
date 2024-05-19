@@ -7,7 +7,7 @@ xaringanExtra
 status](https://www.r-pkg.org/badges/version/xaringanExtra)](https://CRAN.R-project.org/package=xaringanExtra)
 [![xaringanExtra status
 badge](https://gadenbuie.r-universe.dev/badges/xaringanExtra)](https://gadenbuie.r-universe.dev)
-[![tic](https://github.com/gadenbuie/xaringanExtra/actions/workflows/tic.yml/badge.svg)](https://github.com/gadenbuie/xaringanExtra/actions/workflows/tic.yml)
+[![R-CMD-check](https://github.com/gadenbuie/xaringanExtra/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gadenbuie/xaringanExtra/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 <!-- Links -->
@@ -15,27 +15,26 @@ badge](https://gadenbuie.r-universe.dev/badges/xaringanExtra)](https://gadenbuie
 `xaringanExtra` is a playground of enhancements and extensions for
 [xaringan](https://slides.yihui.org/xaringan) slides.
 
--   Add an overview of your presentation with [tile view](#-tile-view)
--   Make your slides [editable](#-editable)
--   Share your slides in style with [share again](#-share-again)
--   Broadcast your slides in real time to viewers with
-    [broadcast](#-broadcast)
--   Scribble on your slides during your presentation with
-    [scribble](#-scribble)
--   Announce slide changes with a [subtle tone](#-slide-tone)
--   Animate slide transitions with [animate.css](#-animatecss)
--   Add tabbed panels to slides with [panelset](#-panelset)
--   Add a logo to all of your slides with [logo](#-logo)
--   Add a top or bottom banner to all of your slides with
-    [banner](#-banner)
--   Add a search box to search through your slides with
-    [search](#-search)
--   Use the [Tachyons CSS utility toolkit](#-tachyons)
--   Add a live video feed of your [webcam](#-webcam)
--   Add one-click code copying with [clipboard](#-clipboard)
--   Always play gifs from the start with [freezeframe](#-freezeframe)
--   Fit your slides to [fill the browser window](#-fit-to-screen)
--   Add [extra CSS styles](#-extra-styles)
+- Add an overview of your presentation with [tile view](#-tile-view)
+- Make your slides [editable](#-editable)
+- Share your slides in style with [share again](#-share-again)
+- Broadcast your slides in real time to viewers with
+  [broadcast](#-broadcast)
+- Scribble on your slides during your presentation with
+  [scribble](#-scribble)
+- Announce slide changes with a [subtle tone](#-slide-tone)
+- Animate slide transitions with [animate.css](#-animatecss)
+- Add tabbed panels to slides with [panelset](#-panelset)
+- Add a logo to all of your slides with [logo](#-logo)
+- Add a top or bottom banner to all of your slides with
+  [banner](#-banner)
+- Add a search box to search through your slides with [search](#-search)
+- Use the [Tachyons CSS utility toolkit](#-tachyons)
+- Add a live video feed of your [webcam](#-webcam)
+- Add one-click code copying with [clipboard](#-clipboard)
+- Always play gifs from the start with [freezeframe](#-freezeframe)
+- Fit your slides to [fill the browser window](#-fit-to-screen)
+- Add [extra CSS styles](#-extra-styles)
 
 Each item can be enabled separately, or load everything at once with a
 single call.
@@ -191,9 +190,9 @@ Add share again to your slides in three easy steps.
     ```
     ````
 
-    `embed_xaringan()` works with <span
-    style="text-decoration: underline">any</span> xaringan presentation,
-    *share again* not required!
+    `embed_xaringan()` works with
+    <span style="text-decoration: underline">any</span> xaringan
+    presentation, *share again* not required!
 
     Here’s what your [slides will look
     like](https://pkg.garrickadenbuie.com/xaringanExtra/share-again/) in
@@ -382,7 +381,7 @@ class: animated slideInRight fadeOutLeft
 
 ## This slide...
 
-- slides in from the right 
+- slides in from the right
 - and fades out to the left on exit
 ```
 
@@ -828,7 +827,7 @@ box has a shadow (`.shadow-5`) and medium-large horizontal padding
 
 ``` markdown
 .bg-washed-green.b--dark-green.ba.bw2.br3.shadow-5.ph4.mt5[
-The only way to write good code is to write tons of bad code first. 
+The only way to write good code is to write tons of bad code first.
 Feeling shame about bad code stops you from getting to good code
 
 .tr[
@@ -941,10 +940,10 @@ sites, and Shiny apps!
 **Related projects:** For related R packages that provide copy support
 via [clipboard.js](https://clipboardjs.com/) see
 
--   [RLesur/klippy: Copy to Clipboard Buttons for RMarkdown HTML
-    Documents](https://github.com/RLesur/klippy)
--   [sbihorel/rclipboard: clipboard.js for R/Shiny
-    Applications](https://github.com/sbihorel/rclipboard)
+- [RLesur/klippy: Copy to Clipboard Buttons for RMarkdown HTML
+  Documents](https://github.com/RLesur/klippy)
+- [sbihorel/rclipboard: clipboard.js for R/Shiny
+  Applications](https://github.com/sbihorel/rclipboard)
 
 ## 📐 Fit to Screen
 
@@ -992,11 +991,11 @@ xaringanExtra::use_extra_styles(
 ```
 ````
 
--   `hover_code_line` adds a little floating triangle next to the
-    hovered line in a code chunk
+- `hover_code_line` adds a little floating triangle next to the hovered
+  line in a code chunk
 
--   `mute_unhighlighted_code` modifies the xaringan/remarkjs line
-    highlighting to mute the lines that *aren’t highlighted*.
+- `mute_unhighlighted_code` modifies the xaringan/remarkjs line
+  highlighting to mute the lines that *aren’t highlighted*.
 
 ![](man/figures/extra-styles-hover.gif)
 
@@ -1011,8 +1010,8 @@ xaringanExtra::use_progress_bar(color = "#0051BA", location = "top")
 ```
 ````
 
--   `color` can be any CSS color
+- `color` can be any CSS color
 
--   `location` can be `"top"` or `"bottom"`
+- `location` can be `"top"` or `"bottom"`
 
--   `height` can be a valid CSS unit, e.g. `10px` or `0.25em`
+- `height` can be a valid CSS unit, e.g. `10px` or `0.25em`

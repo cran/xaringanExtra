@@ -61,8 +61,9 @@ use_panelset <- function(in_xaringan = NULL) {
 #'   tab. Default is `currentColor`.
 #' @param hover_foreground The text color of a hovered panel tab. Default is
 #'   `currentColor`.
-#' @param tabs_border_bottom The border color between the tabs and content.
-#'   Default is `#ddd`.
+#' @param separator_color,tabs_border_bottom The border color between the tabs
+#'   and content. Default is `#ddd`. `tabs_border_bottom` is superseded by
+#'   `separator_color` but is kept for backwards compatibility.
 #' @param tabs_sideways_max_width The maximum width of the tabs in sideways
 #'   mode. The default value is `25%`. A value between 25% and 33% is
 #'   recommended. The tabs can only ever be at most 50% of the container width.
@@ -75,9 +76,12 @@ use_panelset <- function(in_xaringan = NULL) {
 #' @param active_border_color,hover_border_color The color of the top border of
 #'   a tab when it is active or the color of the bottom border of a tab when it
 #'   is hovered or focused. Defaults are `currentColor`.
+#' @param focus_ring The outline style for the tab focus ring.
 #' @param selector The CSS selector used to choose which panelset is being
-#'   styled. In most cases, you can use the default selector and style all
-#'   panelsets on the page.
+#'   styled. In most cases, you can use the default selector to style all
+#'   panelsets on the page. When `selector` is `NULL`, `style_panelset()` will
+#'   return the styles without wrapping them in a `<style>` tag so they can be
+#'   used in inline styles.
 #' @export
 style_panelset_tabs <- function(
   foreground = NULL,
@@ -89,16 +93,18 @@ style_panelset_tabs <- function(
   hover_background = NULL,
   hover_foreground = NULL,
   hover_border_color = NULL,
+  focus_ring = NULL,
+  separator_color = NULL,
   tabs_border_bottom = NULL,
   tabs_sideways_max_width = NULL,
   inactive_opacity = NULL,
   font_family = NULL,
-  selector = ".panelset"
+  selector = ":root"
 ) {
   if (length(list(...))) {
     warning(
-      "The arguments to `syle_panelset()` changed in xaringanExtra 0.1.0. ",
-      "Please refer to the documentation to update your slides.",
+      "The argument names of `style_panelset()` changed in xaringanExtra 0.1.0. ",
+      "Please refer to the documentation to update to the latest names.",
       immediate. = TRUE
     )
   }
@@ -108,7 +114,7 @@ style_panelset_tabs <- function(
   args <- lapply(fn_args, function(x) get(x))
   args <- args[vapply(args, function(x) !is.null(x), TRUE)]
   if (!length(args)) {
-    return(invisible(NULL))
+    return(NULL)
   }
 
   names(args) <- panelset_match_vars(names(args))
@@ -118,10 +124,12 @@ style_panelset_tabs <- function(
     args["--panel-tab-font-family"] <- "Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace"
   }
 
-  style <- ""
-  for (var in names(args)) {
-    style <- paste0(style, var, ": ", args[var], ";")
+  style <- htmltools::css(!!!args)
+
+  if (is.null(selector)) {
+    return(htmltools::HTML(style))
   }
+
   style <- paste0("<style>", selector, "{", style, "}</style>")
   htmltools::HTML(style)
 }
@@ -144,6 +152,8 @@ panelset_match_vars <- function(x = NULL) {
     hover_background = "--panel-tab-hover-background",
     hover_foreground = "--panel-tab-hover-foreground",
     hover_border_color = "--panel-tab-hover-border-color",
+    focus_ring = "--panel-tab-focus-ring",
+    separator_color = "--panel-tabs-separator-color",
     tabs_border_bottom = "--panel-tabs-border-bottom",
     inactive_opacity = "--panel-tab-inactive-opacity",
     font_family = "--panel-tab-font-family",
@@ -162,13 +172,27 @@ panelset_match_vars <- function(x = NULL) {
 html_dependency_panelset <- function() {
   htmltools::htmlDependency(
     name = "panelset",
-    version = "0.2.6",
+    version = read_panelset_version(),
     package = "xaringanExtra",
     src = "panelset",
     script = "panelset.js",
     stylesheet = "panelset.css"
   )
 }
+
+read_panelset_version <- local({
+  version <- NULL
+  function() {
+    src <- system.file("panelset", "panelset.js", package = "xaringanExtra")
+    if (is.null(version)) {
+      lines <- readLines(src)
+      v <- grep("/* VERSION: ", lines, value = TRUE, fixed = TRUE)
+      v <- gsub("[^0-9.]", "", v)
+      version <<- v
+    }
+    return(version)
+  }
+})
 
 # package env to hold original knitr hooks
 .hooks <- new.env(parent = emptyenv())
@@ -210,10 +234,54 @@ register_panelset_knitr_hooks <- function(in_xaringan = NULL) {
   })
 
   knitr::opts_hooks$set(panelset = function(options) {
+    panelset <- options$panelset
+    if (isFALSE(panelset)) return(options)
+    if (isFALSE(options$include)) {
+      options$panelset <- FALSE
+      return(options)
+    }
+
     # panelset chunks ignore global options and default to results="hold"
     # but can be overwritten by the local chunk options if declared explicitly
     chunk_opts <- attr(knitr::knit_code$get(options$label), "chunk_opts")
     options$results <- chunk_opts$results %||% "hold"
+
+    # Create chunk options for the panelset source and output labels, while
+    # allowing for local chunk options to override the defaults
+    labels <- panelset_source_opts(panelset)
+    options$panelset_panel_source <- chunk_opts$panelset_panel_source %||% labels["source"]
+    options$panelset_panel_output <- chunk_opts$panelset_panel_output %||% labels["output"]
+    options$panelset <- TRUE
+
+    if (!(chunk_opts$echo %||% TRUE) || !(chunk_opts$eval %||% TRUE)) {
+      # it doesn't make sense to have a panelset chunk that doesn't both
+      # echo and evaluate, so we'll throw for the benefit of the user
+      stop(
+        "`panelset` chunks must have both `echo = TRUE` and `eval = TRUE`, ",
+        "but at least one of these options was set to `FALSE` for this chunk."
+      )
+    }
+
+    forced <- c()
+    for (opt in c("echo", "eval")) {
+      if (!isTRUE(options[[opt]])) {
+        forced <- c(forced, opt)
+      }
+    }
+
+    if (length(forced)) {
+      warning(
+        sprintf(
+          "'panelset' is forcing %s to `TRUE` for chunk '%s'.",
+          paste0("`", forced, "`", collapse = " and "),
+          options$label
+        )
+      )
+    }
+
+    options$echo <- TRUE
+    options$eval <- TRUE
+
     options
   })
 }
@@ -223,7 +291,10 @@ panelset_source_opts <- function(opt) {
     return(NULL)
   }
 
-  default <- c(source = "Code", output = "Output")
+  default <- c(
+    source = knitr::opts_chunk$get("panelset_panel_source") %||% "Code",
+    output = knitr::opts_chunk$get("panelset_panel_output") %||% "Output"
+  )
   opt <- unlist(opt)
   if (isTRUE(opt) || length(opt) < 1 || !is.character(opt)) {
     return(default)
@@ -242,7 +313,7 @@ panelset_source_opts <- function(opt) {
     names(opt) <- names(default)[seq_along(opt)]
   }
 
-  if (!length(opt) == 2) {
+  if (length(opt) != 2) {
     opt <- c(
       opt[intersect(names(default), names(opt))],
       default[setdiff(names(default), names(opt))]
@@ -253,30 +324,32 @@ panelset_source_opts <- function(opt) {
 }
 
 panelset_chunk_before_xaringan <- function(x, options) {
-  panel_names <- panelset_source_opts(options$panelset)
+  panel_source <- options[["panelset_panel_source"]]
+  panel_output <- options[["panelset_panel_output"]]
 
   paste(
-    sprintf(".panel[.panel-name[%s]", panel_names["source"]),
+    sprintf(".panel[.panel-name[%s]", panel_source),
     "",
     .hooks$source(x, options),
     "\n]\n",
-    sprintf(".panel[.panel-name[%s]", panel_names["output"]),
+    sprintf(".panel[.panel-name[%s]", panel_output),
     "\n",
     sep = "\n"
   )
 }
 
 panelset_chunk_before_html <- function(x, options) {
-  panel_names <- panelset_source_opts(options$panelset)
+  panel_source <- options[["panelset_panel_source"]]
+  panel_output <- options[["panelset_panel_output"]]
 
   paste(
     '<div class="panel">',
-    sprintf('<div class="panel-name">%s</div>', panel_names["source"]),
+    sprintf('<div class="panel-name">%s</div>', panel_source),
     "",
     .hooks$source(x, options),
     "\n</div>\n",
     '<div class="panel">',
-    sprintf('<div class="panel-name">%s</div>', panel_names["output"]),
+    sprintf('<div class="panel-name">%s</div>', panel_output),
     "\n",
     sep = "\n"
   )

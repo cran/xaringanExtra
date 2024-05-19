@@ -38,3 +38,34 @@
     Output
       [1] ":root {\n  --xe-banner-fg: red;\n  --xe-banner-height: 3em;\n}"
 
+# style_banner(): handles width units
+
+    Code
+      style_banner(width = "25%")
+    Output
+      <style>:root {
+        --xe-banner-width-left: 25%;
+        --xe-banner-width-center: 25%;
+        --xe-banner-width-right: 25%;
+      }</style>
+
+---
+
+    Code
+      style_banner(width = c("100px", "200px"))
+    Output
+      <style>:root {
+        --xe-banner-width-left: 100px;
+        --xe-banner-width-center: 200px;
+      }</style>
+
+---
+
+    Code
+      style_banner(width = c(center = "2em", right = "3em"))
+    Output
+      <style>:root {
+        --xe-banner-width-center: 2em;
+        --xe-banner-width-right: 3em;
+      }</style>
+
